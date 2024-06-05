@@ -38,8 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const transaction = { id: Date.now(), text, amount };
     const totalBalance = calculateTotalBalance() + amount;
     const totalExpenses = calculateTotalExpenses() + (amount < 0 ? amount : 0);
-
-    if (totalBalance < totalExpenses) {
+    if (totalBalance < amount) {
       alert(
         "Total balance is less than expenses. Cannot add this transaction."
       );
@@ -82,6 +81,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalIncome = calculateTotalIncome();
     const totalExpenses = calculateTotalExpenses();
 
+    if (totalBalance < totalExpenses) {
+      alert(
+        "Total balance is less than expenses. Cannot add this transaction."
+      );
+      // Remove the last added transaction
+      transactions.pop();
+      return;
+    }
+
     balanceElement.textContent = `$${totalBalance.toFixed(2)}`;
     incomeElement.textContent = `$${totalIncome.toFixed(2)}`;
     expenseElement.textContent = `$${Math.abs(totalExpenses).toFixed(2)}`;
@@ -89,15 +97,15 @@ document.addEventListener("DOMContentLoaded", () => {
     transactionList.innerHTML = transactions
       .map(transaction => {
         return `<li class="bg-gray-200 p-2 mb-2 rounded flex justify-between">
-                        ${transaction.text}
-                        <span class="${
-                          transaction.amount < 0
-                            ? "text-red-500"
-                            : "text-green-500"
-                        }">${transaction.amount < 0 ? "-" : "+"}$${Math.abs(
+                      ${transaction.text}
+                      <span class="${
+                        transaction.amount < 0
+                          ? "text-red-500"
+                          : "text-green-500"
+                      }">${transaction.amount < 0 ? "-" : "+"}$${Math.abs(
           transaction.amount
         ).toFixed(2)}</span>
-                    </li>`;
+                  </li>`;
       })
       .join("");
   }
