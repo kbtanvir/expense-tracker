@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .dark-mode {
+            --tw-bg-opacity: 1;
+            background-color: rgba(31, 41, 55, var(--tw-bg-opacity));
+            --tw-text-opacity: 1;
+            color: rgba(229, 231, 235, var(--tw-text-opacity));
+        }
+    </style>
+</head>
+<body class="bg-white text-black min-h-screen flex flex-col items-center justify-center transition-colors duration-300">
+    <header class="w-full bg-gray-800 text-white py-4 px-6 flex justify-between items-center">
+        <h1 class="text-xl font-bold">Expense Tracker</h1>
+        <button id="toggle-dark-mode" class="bg-gray-600 px-3 py-1 rounded">Toggle Dark Mode</button>
+    </header>
+    <main class="w-full max-w-md p-6">
+        <section id="balance" class="bg-gray-200 p-4 rounded mb-4 text-center">
+            <h2 class="text-2xl font-bold">Your Balance</h2>
+            <p id="total-balance" class="text-3xl">$0.00</p>
+        </section>
+        <section id="income-expense" class="flex justify-between bg-gray-200 p-4 rounded mb-4">
+            <div id="income" class="w-1/2 text-center border-r border-gray-400">
+                <h3 class="text-xl font-semibold">Income</h3>
+                <p id="income-amount" class="text-green-500 text-xl">$0.00</p>
+            </div>
+            <div id="expense" class="w-1/2 text-center">
+                <h3 class="text-xl font-semibold">Expense</h3>
+                <p id="expense-amount" class="text-red-500 text-xl">$0.00</p>
+            </div>
+        </section>
+        <section id="transaction-history" class="mb-4">
+            <h3 class="text-xl font-bold mb-2">Transaction History</h3>
+            <ul id="transaction-list" class="list-none p-0">
+                <!-- Transactions will be added here dynamically -->
+            </ul>
+        </section>
+        <section id="add-transaction" class="bg-gray-200 p-4 rounded">
+            <h3 class="text-xl font-bold mb-2">Add New Transaction</h3>
+            <form id="transaction-form" class="flex flex-col">
+                <label for="transaction-text" class="mb-1">Text</label>
+                <input type="text" id="transaction-text" class="p-2 mb-4 rounded border" required>
+                <label for="transaction-amount" class="mb-1">Amount <small>(negative - expense, positive - income)</small></label>
+                <input type="number" id="transaction-amount" class="p-2 mb-4 rounded border" required>
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded">Add Transaction</button>
+            </form>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
