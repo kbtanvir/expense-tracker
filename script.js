@@ -28,17 +28,76 @@ document.addEventListener("DOMContentLoaded", () => {
     amountInput.value = "";
   });
 
-  // Event listener for dark mode toggle
-  toggleDarkModeBtn.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
+  // !dark mode start
+
+  if (
+    localStorage.getItem("color-theme") === "dark" ||
+    (!("color-theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+
+  var themeToggleDarkIcon = document.getElementById("theme-toggle-dark-icon");
+  var themeToggleLightIcon = document.getElementById("theme-toggle-light-icon");
+
+  // Change the icons inside the button based on previous settings
+
+  if (
+    localStorage.getItem("color-theme") === "dark" ||
+    (!("color-theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  ) {
+    themeToggleLightIcon.classList.remove("hidden");
+  } else {
+    themeToggleDarkIcon.classList.remove("hidden");
+  }
+
+  var themeToggleBtn = document.getElementById("theme-toggle");
+
+  themeToggleBtn.addEventListener("click", function () {
+    // toggle icons inside button
+    themeToggleDarkIcon.classList.toggle("hidden");
+    themeToggleLightIcon.classList.toggle("hidden");
+
+    // if set via local storage previously
+    if (localStorage.getItem("color-theme")) {
+      if (localStorage.getItem("color-theme") === "light") {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("color-theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("color-theme", "light");
+      }
+
+      // if NOT set via local storage previously
+    } else {
+      if (document.documentElement.classList.contains("dark")) {
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("color-theme", "light");
+      } else {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("color-theme", "dark");
+      }
+    }
   });
 
-  // Function to add a transaction
+  // !dark mode end
+
+  // add a transaction
+
   function addTransaction(text, amount) {
     const transaction = { id: Date.now(), text, amount };
+    if (Math.abs(amount) == 0) {
+      alert("Why adding 0?");
+      return;
+    }
+
     const totalBalance = calculateTotalBalance() + amount;
-    const totalExpenses = calculateTotalExpenses() + (amount < 0 ? amount : 0);
-    if (totalBalance < amount) {
+
+    if (totalBalance < 0) {
       alert(
         "Total balance is less than expenses. Cannot add this transaction."
       );
@@ -49,7 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
     updateUI();
   }
 
-  // Function to calculate total balance
+  // calculate total balance
+
   function calculateTotalBalance() {
     return transactions.reduce(
       (acc, transaction) => acc + transaction.amount,
@@ -57,7 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
-  // Function to calculate total income
+  // calculate total income
+
   function calculateTotalIncome() {
     return transactions.reduce(
       (acc, transaction) =>
@@ -66,7 +127,8 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
-  // Function to calculate total expenses
+  // calculate total expenses
+
   function calculateTotalExpenses() {
     return transactions.reduce(
       (acc, transaction) =>
@@ -75,7 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
-  // Function to update the UI
+  // update the UI
+
   function updateUI() {
     const totalBalance = calculateTotalBalance();
     const totalIncome = calculateTotalIncome();
@@ -86,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Total balance is less than expenses. Cannot add this transaction."
       );
       // Remove the last added transaction
+
       transactions.pop();
       return;
     }
@@ -96,15 +160,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     transactionList.innerHTML = transactions
       .map(transaction => {
-        return `<li class="bg-gray-200 p-2 mb-2 rounded flex justify-between">
+        return `<li class="bg-white dark:bg-gray-900 py-2 px-4 mb-2 rounded flex justify-between border-r-4 border-solid  shadow-md ${
+          transaction.amount < 0 ? "border-red-500" : "border-green-500"
+        }">
                       ${transaction.text}
-                      <span class="${
-                        transaction.amount < 0
-                          ? "text-red-500"
-                          : "text-green-500"
-                      }">${transaction.amount < 0 ? "-" : "+"}$${Math.abs(
-          transaction.amount
-        ).toFixed(2)}</span>
+                      <span class="">${
+                        transaction.amount < 0 ? "-" : "+"
+                      }$${Math.abs(transaction.amount).toFixed(2)}</span>
                   </li>`;
       })
       .join("");

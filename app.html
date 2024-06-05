@@ -1,56 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expense Tracker</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        .dark-mode {
-            --tw-bg-opacity: 1;
-            background-color: rgba(31, 41, 55, var(--tw-bg-opacity));
-            --tw-text-opacity: 1;
-            color: rgba(229, 231, 235, var(--tw-text-opacity));
-        }
-    </style>
-</head>
-<body class="bg-white text-black min-h-screen flex flex-col items-center justify-center transition-colors duration-300">
-    <header class="w-full bg-gray-800 text-white py-4 px-6 flex justify-between items-center">
-        <h1 class="text-xl font-bold">Expense Tracker</h1>
-        <button id="toggle-dark-mode" class="bg-gray-600 px-3 py-1 rounded">Toggle Dark Mode</button>
-    </header>
-    <main class="w-full max-w-md p-6">
-        <section id="balance" class="bg-gray-200 p-4 rounded mb-4 text-center">
-            <h2 class="text-2xl font-bold">Your Balance</h2>
-            <p id="total-balance" class="text-3xl">$0.00</p>
-        </section>
-        <section id="income-expense" class="flex justify-between bg-gray-200 p-4 rounded mb-4">
-            <div id="income" class="w-1/2 text-center border-r border-gray-400">
-                <h3 class="text-xl font-semibold">Income</h3>
-                <p id="income-amount" class="text-green-500 text-xl">$0.00</p>
-            </div>
-            <div id="expense" class="w-1/2 text-center">
-                <h3 class="text-xl font-semibold">Expense</h3>
-                <p id="expense-amount" class="text-red-500 text-xl">$0.00</p>
-            </div>
-        </section>
-        <section id="transaction-history" class="mb-4">
-            <h3 class="text-xl font-bold mb-2">Transaction History</h3>
-            <ul id="transaction-list" class="list-none p-0">
-                <!-- Transactions will be added here dynamically -->
-            </ul>
-        </section>
-        <section id="add-transaction" class="bg-gray-200 p-4 rounded">
-            <h3 class="text-xl font-bold mb-2">Add New Transaction</h3>
-            <form id="transaction-form" class="flex flex-col">
-                <label for="transaction-text" class="mb-1">Text</label>
-                <input type="text" id="transaction-text" class="p-2 mb-4 rounded border" required>
-                <label for="transaction-amount" class="mb-1">Amount <small>(negative - expense, positive - income)</small></label>
-                <input type="number" id="transaction-amount" class="p-2 mb-4 rounded border" required>
-                <button type="submit" class="bg-blue-500 text-white p-2 rounded">Add Transaction</button>
-            </form>
-        </section>
+  </head>
+
+  <body
+    class="bg-gray-100 dark:bg-black text-black min-h-screen flex flex-col items-center justify-center transition-colors duration-300"
+  >
+    <main class="w-full max-w-md dark:text-white px-4 pb-10">
+      <section
+        class="w-full max-w-md py-4 flex justify-between items-center mb-10"
+      >
+        <h2 class="text-lg font-bold">Expense Tracker</h2>
+        <!-- dark mode switcher -->
+        <div class="flex md:order-2">
+          <button
+            id="theme-toggle"
+            type="button"
+            class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
+          >
+            <svg
+              id="theme-toggle-light-icon"
+              class="hidden w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+              ></path>
+            </svg>
+            <svg
+              id="theme-toggle-dark-icon"
+              class="hidden w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <section id="balance" class="rounded mb-10 text-center">
+        <h2 class="text-md font-bold uppercase">Your Balance</h2>
+        <p id="total-balance" class="text-4xl font-bold">$0.00</p>
+      </section>
+
+      <section
+        id="income-expense"
+        class="flex uppercase justify-between bg-white dark:bg-gray-900 shadow-md p-4 rounded mb-10"
+      >
+        <div id="income" class="w-1/2 text-center border-r border-gray-400">
+          <h3 class="text-md font-semibold">Income</h3>
+          <p id="income-amount" class="text-green-500 font-bold text-lg">
+            $0.00
+          </p>
+        </div>
+        <div id="expense" class="w-1/2 text-center">
+          <h3 class="text-md font-semibold">Expense</h3>
+          <p id="expense-amount" class="text-red-600 font-bold text-lg">
+            $0.00
+          </p>
+        </div>
+      </section>
+
+      <section id="transaction-history" class="mb-10">
+        <h3 class="text-lg font-bold mb-2">History</h3>
+        <hr
+          class="mb-4 border-gray-300 dark:border-gray-800"
+          style="height: 2px"
+        />
+        <ul id="transaction-list" class="list-none p-0">
+          <div
+            class="flex bg-gray-200 dark:bg-gray-900 border-1 justify-center p-6"
+          >
+            No transactions
+          </div>
+          <!-- Transactions will be added here dynamically -->
+        </ul>
+      </section>
+
+      <section id="add-transaction">
+        <h3 class="text-lg font-bold mb-2">Add New Transaction</h3>
+        <hr class="mb-4 border-gray-300 dark:border-gray-800 border-b-1" />
+        <form id="transaction-form" class="flex flex-col">
+          <label for="transaction-text" class="mb-1">Text</label>
+          <input
+            type="text"
+            id="transaction-text"
+            class="p-2 mb-4 rounded border dark:bg-gray-900"
+            required
+          />
+          <label for="transaction-amount" class="mb-1"
+            >Amount
+            <small>(negative - expense, positive - income)</small></label
+          >
+          <input
+            type="number"
+            id="transaction-amount"
+            class="p-2 mb-4 rounded border dark:bg-gray-900"
+            required
+          />
+          <button type="submit" class="bg-purple-500 text-white p-2 rounded">
+            Add Transaction
+          </button>
+        </form>
+      </section>
     </main>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        content: ["./*.html"],
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                blue: {
+                  light: "#00ccdd",
+                },
+              },
+            },
+          },
+        },
+        darkMode: "class",
+      };
+    </script>
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
