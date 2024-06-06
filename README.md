@@ -65,14 +65,6 @@ We welcome contributions! Please follow these steps to contribute:
 4. Push to the branch (`git push origin feature-branch`).
 5. Open a pull request.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
-## Contact
-
-For any questions or suggestions, feel free to reach out to the project maintainer at your-email@example.com.
-
 ---
 
 Thank you for using the Expense Tracker App! Happy tracking!
