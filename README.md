@@ -2,6 +2,9 @@
 
 Welcome to the Expense Tracker App! This application helps you track your expenses, view the history of your transactions, and switch between light and dark modes for a comfortable viewing experience.
 
+![image](https://github.com/kbtanvir/expense-tracker/assets/52887114/2bde6544-7d28-4bca-8253-ebc0b09ef9a5)
+
+
 ## Features
 
 - **Dark Mode:** Switch between light and dark themes for better visibility and user comfort.
